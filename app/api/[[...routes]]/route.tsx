@@ -13,6 +13,7 @@ import { getChannelMembers } from "@/lib/airstack/getChannelMembers";
 import getCast from "@/lib/neynar/getCast";
 import getFidCommentsFromDirectReplies from "@/lib/getFidCommentsFromDirectReplies";
 import getCastConversation from "@/lib/neynar/getCastConversation";
+import includesDegenComment from "@/lib/includesDegenComment";
 
 const app = new Frog({
   assetsPath: "/",
@@ -35,9 +36,11 @@ app.frame("/verify", async (c) => {
     rawConversation.direct_replies,
     fid
   );
-  console.log("get sufficient tip casts from comments", comments);
 
-  return c.res(getVerifyFrame());
+  console.log("get sufficient tip casts from comments", comments);
+  const hasTippedDegen = includesDegenComment(comments);
+  console.log("hasTippedDegen", hasTippedDegen);
+  return c.res(getVerifyFrame(hasTippedDegen));
 });
 
 app.frame("/fid/:fid", async (c) => {
@@ -126,9 +129,11 @@ const getHomeFrame = () => ({
   ],
 });
 
-const getVerifyFrame = () => ({
+const getVerifyFrame = (hasTippedDegen: boolean) => ({
   action: "/",
-  image: `${VERCEL_URL}/images/insert-token.gif`,
+  image: `${VERCEL_URL}/images/${
+    hasTippedDegen ? "unlock.gif" : "insert-token.gif"
+  }`,
   intents: [
     <Button>Check Again</Button>,
     <Button.Redirect location={`https://warpcast.com/newtroarts`}>
