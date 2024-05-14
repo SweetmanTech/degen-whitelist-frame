@@ -16,12 +16,7 @@ const app = new Frog({
   basePath: "/api",
 });
 
-app.frame("/", async (c) => {
-  const { frameData } = c;
-  const fid = frameData?.fid || 2;
-  const { avatar, name, bio, randomChannelNames } = await getFidParams(fid);
-  return c.res(getMemberFrame(avatar, fid, name, bio, randomChannelNames));
-});
+app.frame("/", async (c) => c.res(getHomeFrame()));
 
 app.frame("/fid/:fid", async (c) => {
   const fid = parseInt(c.req.param("fid"), 10);
@@ -44,23 +39,6 @@ devtools(app, { serveStatic });
 
 export const GET = handle(app);
 export const POST = handle(app);
-
-const Avatar = ({
-  src = "https://cloudflare-ipfs.com/ipfs/bafybeifbkoma4zfff5locnoxhgwpx2eehezcbctws32qsf3nsexmgtfboy",
-  size = "32",
-}) => (
-  <img
-    alt="Avatar"
-    height={size}
-    width={size}
-    src={src}
-    style={{
-      aspectRatio: "32/32",
-      objectFit: "cover",
-      borderRadius: "50%",
-    }}
-  />
-);
 
 const getFidParams = async (fid: number) => {
   const addresses = await getFarcasterUserAddress(fid);
@@ -105,57 +83,7 @@ const getMemberFrame = (
 
   return {
     action: postPath,
-    image: (
-      <div
-        style={{
-          alignItems: "center",
-          background: "black",
-          backgroundSize: "100% 100%",
-          display: "flex",
-          flexDirection: "column",
-          flexWrap: "nowrap",
-          height: "100%",
-          justifyContent: "center",
-          textAlign: "center",
-          width: "100%",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            color: "white",
-            fontSize: 60,
-            alignItems: "center",
-            fontStyle: "normal",
-            letterSpacing: "-0.025em",
-            lineHeight: 1.4,
-            marginTop: 30,
-            padding: "0 120px",
-            whiteSpace: "pre-wrap",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-around",
-              color: "white",
-              gap: 10,
-              fontSize: 60,
-              alignItems: "center",
-              width: "100vw",
-            }}
-          >
-            <Avatar src={avatar} size={"100"} />
-            <div>{name}</div>
-            fid: {fid}
-          </div>
-
-          <p style={{ fontSize: 25 }}>{bio}</p>
-          <p>{randomChannelNames}</p>
-        </div>
-      </div>
-    ),
+    image: `${VERCEL_URL}/giphy.gif`,
     intents: [
       <Button.Redirect location={`https://warpcast.com/${name}`}>
         Follow
@@ -164,3 +92,14 @@ const getMemberFrame = (
     ],
   };
 };
+
+const getHomeFrame = () => ({
+  action: "/",
+  image: `${VERCEL_URL}/images/giphy.gif`,
+  intents: [
+    <Button>Join Whitelist</Button>,
+    <Button.Redirect location={`https://warpcast.com/newtroarts`}>
+      Follow
+    </Button.Redirect>,
+  ],
+});
