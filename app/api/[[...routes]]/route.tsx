@@ -10,6 +10,9 @@ import { Address } from "viem";
 import { getAddressChannels } from "@/lib/airstack/getAddressChannels";
 import { VERCEL_URL } from "@/lib/consts";
 import { getChannelMembers } from "@/lib/airstack/getChannelMembers";
+import getCast from "@/lib/neynar/getCast";
+import getFidCommentsFromDirectReplies from "@/lib/getFidCommentsFromDirectReplies";
+import getCastConversation from "@/lib/neynar/getCastConversation";
 
 const app = new Frog({
   assetsPath: "/",
@@ -17,6 +20,25 @@ const app = new Frog({
 });
 
 app.frame("/", async (c) => c.res(getHomeFrame()));
+
+app.frame("/verify", async (c) => {
+  console.log("Verifying...");
+  const { frameData } = c;
+  console.log("get fid from frameData", frameData);
+  const { castId, fid } = frameData as any;
+  const { hash } = castId;
+  console.log("get cast hash", frameData);
+  console.log("get cast from hash", hash);
+  const rawConversation = await getCastConversation(hash);
+  console.log("get comments from cast", rawConversation);
+  const comments = getFidCommentsFromDirectReplies(
+    rawConversation.direct_replies,
+    fid
+  );
+  console.log("get sufficient tip casts from comments", comments);
+
+  return c.res(getVerifyFrame());
+});
 
 app.frame("/fid/:fid", async (c) => {
   const fid = parseInt(c.req.param("fid"), 10);
@@ -94,10 +116,21 @@ const getMemberFrame = (
 };
 
 const getHomeFrame = () => ({
-  action: "/",
+  action: "/verify",
   image: `${VERCEL_URL}/images/giphy.gif`,
   intents: [
     <Button>Join Whitelist</Button>,
+    <Button.Redirect location={`https://warpcast.com/newtroarts`}>
+      Follow
+    </Button.Redirect>,
+  ],
+});
+
+const getVerifyFrame = () => ({
+  action: "/",
+  image: `${VERCEL_URL}/images/insert-token.gif`,
+  intents: [
+    <Button>Check Again</Button>,
     <Button.Redirect location={`https://warpcast.com/newtroarts`}>
       Follow
     </Button.Redirect>,
