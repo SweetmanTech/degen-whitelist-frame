@@ -13,8 +13,6 @@ const getCastConversation = async (hash = fallbackHash) => {
     .then((response) => response.json())
     .then((response) => response.conversation.cast)
     .catch((err) => console.error(err));
-  console.log(response);
-  console.log(response);
   return response;
 };
 
