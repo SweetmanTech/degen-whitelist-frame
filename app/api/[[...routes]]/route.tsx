@@ -7,7 +7,7 @@ import { serveStatic } from "frog/serve-static";
 import { MINIMUM_DEGEN_TIP, FRAME_URL } from "@/lib/consts";
 import getFidCommentsFromDirectReplies from "@/lib/getFidCommentsFromDirectReplies";
 import getCastConversation from "@/lib/neynar/getCastConversation";
-import getDegenTipAmount from "@/lib/getDegenTipAmount";
+import getDegenTip from "@/lib/getDegenTip";
 import attest from "@/lib/attest";
 import getEncodedAttestationData from "@/lib/getEncodedAttestationData";
 import getAttestArgs from "@/lib/getAttestArgs";
@@ -24,15 +24,24 @@ app.frame("/verify", async (c) => {
   const { castId, fid } = frameData as any;
   const { hash } = castId;
   const rawConversation = await getCastConversation(hash);
+  console.log("SWEETS GET PARENT HASH & FID", rawConversation);
+  const { author } = rawConversation;
+  const parentFid = author.fid;
   const comments = getFidCommentsFromDirectReplies(
     rawConversation.direct_replies,
     fid
   );
-  const tip = getDegenTipAmount(comments);
+  const { tip, tipCastHash } = getDegenTip(comments);
   const hasTippedDegen = tip >= MINIMUM_DEGEN_TIP;
   let successfulAttest = false;
   if (hasTippedDegen) {
-    const encodedData = getEncodedAttestationData(fid, hash, tip);
+    const encodedData = getEncodedAttestationData(
+      fid,
+      tipCastHash,
+      tip,
+      parentFid,
+      hash
+    );
     const args = getAttestArgs(encodedData);
     successfulAttest = Boolean(await attest(args));
   }
