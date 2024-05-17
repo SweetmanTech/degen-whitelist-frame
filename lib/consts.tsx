@@ -1,6 +1,6 @@
 import { baseSepolia } from "viem/chains";
 
-export const VERCEL_URL = process.env.VERCEL_URL || "http://localhost:3000";
+export const FRAME_URL = process.env.FRAME_URL || "http://localhost:3000";
 export const MINIMUM_DEGEN_TIP = 77;
 export const EAS = "0x4200000000000000000000000000000000000021";
 export const CHAIN = baseSepolia;

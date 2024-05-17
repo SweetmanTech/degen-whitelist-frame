@@ -4,7 +4,7 @@ import { Button, Frog } from "frog";
 import { devtools } from "frog/dev";
 import { handle } from "frog/next";
 import { serveStatic } from "frog/serve-static";
-import { MINIMUM_DEGEN_TIP, VERCEL_URL } from "@/lib/consts";
+import { MINIMUM_DEGEN_TIP, FRAME_URL } from "@/lib/consts";
 import getFidCommentsFromDirectReplies from "@/lib/getFidCommentsFromDirectReplies";
 import getCastConversation from "@/lib/neynar/getCastConversation";
 import getDegenTipAmount from "@/lib/getDegenTipAmount";
@@ -46,7 +46,7 @@ export const POST = handle(app);
 
 const getHomeFrame = () => ({
   action: "/verify",
-  image: `${VERCEL_URL}/images/home.png`,
+  image: `${FRAME_URL}/images/home.png`,
   imageAspectRatio: "1:1" as any,
   intents: [
     <Button>Join Whitelist</Button>,
@@ -72,7 +72,7 @@ const getVerifyFrame = (hasTippedDegen: boolean) => {
     </Button.Redirect>,
   ];
   const response = {
-    image: `${VERCEL_URL}/images/${
+    image: `${FRAME_URL}/images/${
       hasTippedDegen ? "success.png" : "requirements.png"
     }`,
     imageAspectRatio: "1:1" as any,
