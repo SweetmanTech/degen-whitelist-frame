@@ -26,7 +26,6 @@ app.frame("/verify", async (c) => {
     fid
   );
   const hasTippedDegen = includesDegenComment(comments);
-  console.log("hasTippedDegen", hasTippedDegen);
   return c.res(getVerifyFrame(hasTippedDegen));
 });
 
@@ -37,7 +36,8 @@ export const POST = handle(app);
 
 const getHomeFrame = () => ({
   action: "/verify",
-  image: `${VERCEL_URL}/images/giphy.gif`,
+  image: `${VERCEL_URL}/images/home.png`,
+  imageAspectRatio: "1:1" as any,
   intents: [
     <Button>Join Whitelist</Button>,
     <Button.Redirect location={`https://warpcast.com/newtroarts`}>
@@ -63,14 +63,14 @@ const getVerifyFrame = (hasTippedDegen: boolean) => {
   ];
   const response = {
     image: `${VERCEL_URL}/images/${
-      hasTippedDegen ? "unlock.gif" : "insert-token.gif"
+      hasTippedDegen ? "success.png" : "requirements.png"
     }`,
+    imageAspectRatio: "1:1" as any,
     intents,
   } as any;
 
   if (!hasTippedDegen) {
     response.action = "/verify";
   }
-  console.log("SWEETS intents", intents);
   return response;
 };
