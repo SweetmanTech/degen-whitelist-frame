@@ -1,12 +1,8 @@
-## FramePG 
-
-![FramePG banner](https://i.imgur.com/HKwAaIU.png)
+## Newtro's Invisible Drop
 
 View and donate to Gitcoin GG20 grant rounds inside of Farcaster frames
 
-Built by [dylsteck](https://github.com/dylsteck/framepg)
-
-
+Built by [sweetman](https://github.com/SweetmanTech/degen-whitelist-frame)
 
 ```
 npm install
