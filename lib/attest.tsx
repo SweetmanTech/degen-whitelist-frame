@@ -4,7 +4,6 @@ import { whitelistAccount, whitelistClient } from "./clients/whitelistClient";
 
 const attest = async (args: any[]) => {
   try {
-    console.log("args:", args);
     const tx = await whitelistClient.writeContract({
       account: whitelistAccount,
       address: EASContractAddress,
