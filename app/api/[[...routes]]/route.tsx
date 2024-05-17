@@ -4,10 +4,13 @@ import { Button, Frog } from "frog";
 import { devtools } from "frog/dev";
 import { handle } from "frog/next";
 import { serveStatic } from "frog/serve-static";
-import { VERCEL_URL } from "@/lib/consts";
+import { MINIMUM_DEGEN_TIP, VERCEL_URL } from "@/lib/consts";
 import getFidCommentsFromDirectReplies from "@/lib/getFidCommentsFromDirectReplies";
 import getCastConversation from "@/lib/neynar/getCastConversation";
-import includesDegenComment from "@/lib/includesDegenComment";
+import getDegenTipAmount from "@/lib/getDegenTipAmount";
+import attest from "@/lib/attest";
+import getEncodedAttestationData from "@/lib/getEncodedAttestationData";
+import getAttestArgs from "@/lib/getAttestArgs";
 
 const app = new Frog({
   assetsPath: "/",
@@ -25,8 +28,15 @@ app.frame("/verify", async (c) => {
     rawConversation.direct_replies,
     fid
   );
-  const hasTippedDegen = includesDegenComment(comments);
-  return c.res(getVerifyFrame(hasTippedDegen));
+  const tip = getDegenTipAmount(comments);
+  const hasTippedDegen = tip >= MINIMUM_DEGEN_TIP;
+  let successfulAttest = false;
+  if (hasTippedDegen) {
+    const encodedData = getEncodedAttestationData(fid, hash, tip);
+    const args = getAttestArgs(encodedData);
+    successfulAttest = Boolean(await attest(args));
+  }
+  return c.res(getVerifyFrame(successfulAttest));
 });
 
 devtools(app, { serveStatic });

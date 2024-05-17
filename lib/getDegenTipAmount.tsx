@@ -1,6 +1,4 @@
-import { MINIMUM_DEGEN_TIP } from "./consts";
-
-const includesDegenComment = (comments: any[]) => {
+const getDegenTipAmount = (comments: any[]) => {
   let maxDegen = 0;
 
   comments.forEach((comment) => {
@@ -13,7 +11,7 @@ const includesDegenComment = (comments: any[]) => {
     }
   });
 
-  return maxDegen >= MINIMUM_DEGEN_TIP;
+  return maxDegen;
 };
 
-export default includesDegenComment;
+export default getDegenTipAmount;
