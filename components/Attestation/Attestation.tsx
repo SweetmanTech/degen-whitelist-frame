@@ -9,11 +9,8 @@ const Attestation = ({ attestation }: any) => {
   useEffect(() => {
     const fetchAllowance = async () => {
       try {
-        console.log("SWEETS GETTING ALLOWANCE", fid);
-
         const response = await fetch(`/api/degen?fid=${fid}`);
         const data = await response.json();
-        console.log("SWEETS ALLOWANCE", data);
         setAllowance(data[0]);
       } catch (error) {
         console.error("Error fetching allowance:", error);

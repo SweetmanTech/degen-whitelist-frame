@@ -6,7 +6,7 @@ const getDecodedAttestationData = (rawData: any) => {
     const decoded = schemaEncoder.decodeData(rawData);
     return decoded;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return false;
   }
 };
