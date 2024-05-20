@@ -15,6 +15,7 @@ const getAttestations = async (rawEvents: any[]) => {
   // Generate the contracts array for multicall
   const contracts = rawEvents.map((event) => {
     const decoded = getDecodedLog(event) as any;
+    const uid = decoded?.args?.uid;
     return {
       ...wagmiContract,
       args: [decoded?.args?.uid],

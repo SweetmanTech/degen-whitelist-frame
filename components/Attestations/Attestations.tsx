@@ -9,20 +9,18 @@ import getDecodedAttestationData from "@/lib/eas/getDecodedAttestationData";
 
 const Attestations = () => {
   const topics = getEventTopics();
-  const [rawEvents, setRawEvents] = useState([]);
-  const [attestations, setAttestations] = useState([]);
+  const [attestations, setAttestations] = useState<any[]>([]);
 
   useEffect(() => {
     const init = async () => {
       const logs = await ethGetLogs();
-      setRawEvents(logs);
       const response = await getAttestations(logs);
-      console.log("SWEETS ATTESTATIONS", response);
-      const decodedAttestations = response.map((attestation) =>
-        getDecodedAttestationData(attestation.result[9])
-      );
-      setAttestations(decodedAttestations);
-      console.log("SWEETS DECODED ATTESTATIONS", decodedAttestations);
+      const decodedAttestations = response
+        .map((attestation: any) =>
+          getDecodedAttestationData(attestation.result[9])
+        )
+        .filter((attestation: any) => attestation !== false);
+      setAttestations(decodedAttestations as any);
     };
     init();
   }, []);
