@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 const Attestation = ({ attestation }: any) => {
-  const [allowance, setAllowance] = useState(null);
+  const [allowance, setAllowance] = useState<any>(null);
   const fid = attestation
     .find((item: any) => item.name === "fid")
     ?.value.value.toString();
