@@ -1,4 +1,5 @@
 import { SchemaEncoder } from "@ethereum-attestation-service/eas-sdk";
+import getSchemaEncoder from "./eas/getSchemaEncoder";
 
 const getEncodedAttestationData = (
   fid: any,
@@ -7,9 +8,7 @@ const getEncodedAttestationData = (
   parentFid: any,
   parentCastHash: any
 ) => {
-  const schemaEncoder = new SchemaEncoder(
-    "uint256 fid, string castHash, uint256 tip, uint256 parentFid, string parentCastHash"
-  );
+  const schemaEncoder = getSchemaEncoder();
   const encodedData = schemaEncoder.encodeData([
     { name: "fid", value: fid, type: "uint256" },
     {
