@@ -1,43 +1,53 @@
-import * as React from "react"
+import * as React from "react";
 
 import {
   Card,
-  CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import Link from "next/link"
-import { FPG_ICON_URL } from "@/lib/utils"
+} from "@/components/ui/card";
+import Link from "next/link";
+import { FPG_ICON_URL } from "@/lib/utils";
 import { FaGithub } from "react-icons/fa";
 
 import Image from "next/image";
 
 export function Header() {
-    return (
-        <Card className="bg-white">
-            <CardHeader>
-                <div className="flex flex-row gap-2 items-center">
-                    <Image src={FPG_ICON_URL} width={48} height={48} alt="FramePG" />
-                    <CardTitle>FramePG</CardTitle>
-                </div>
-                <CardDescription>
-                    View and donate to Gitcoin GG20 grant rounds inside of Farcaster frames
-                    <br/>
-                    <span className="font-medium">How it works:</span>
-                    <br/> - Choose a GG20 round below and share its link on Warpcast as a frame
-                    <br /> - When you or someone else clicks on the frame, you'll be able to view and donate to projects from that round
-                </CardDescription>
-                <div className="flex flex-row justify-between items-center">
-                    <CardDescription className="text-sm pt-3">
-                            Powered by <Link href="https://frog.fm" className="underline">Frog</Link>
-                    </CardDescription>
-                    <Link href="https://github.com/fundpg/framepg" className="underline">
-                        <FaGithub size={16} className="pt-1" />
-                    </Link>
-                </div> 
-            </CardHeader>
-        </Card>
-    )
+  return (
+    <Card className="bg-white">
+      <CardHeader>
+        <div className="flex flex-row gap-2 items-center">
+          <CardTitle>Invisible Drop</CardTitle>
+        </div>
+        <CardDescription>
+          <Link
+            href="https://warpcast.com/newtroarts/0x6fc89eb2"
+            className="underline"
+          >
+            By Newtro Arts
+          </Link>
+          <br />
+          Once it ends, you'll receive the artists pieces in your wallets!
+          <span className="font-medium">
+            To join the whitelist, follow these steps:
+          </span>
+          <br /> - 🔴 Click on "Join Whitelist"
+          <br /> - 🔵 Type 77 $degen or more in the comments
+          <br /> - 🟣 Follow us and share this frame This frame will be open for
+          48HS.
+        </CardDescription>
+        <div className="flex flex-row justify-between items-center">
+          <CardDescription className="text-sm pt-3">
+            Once it ends, you'll receive the artists pieces in your wallets!
+          </CardDescription>
+          <Link
+            href="https://github.com/SweetmanTech/degen-whitelist-frame"
+            className="underline"
+          >
+            <FaGithub size={16} className="pt-1" />
+          </Link>
+        </div>
+      </CardHeader>
+    </Card>
+  );
 }
